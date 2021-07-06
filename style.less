@@ -1,0 +1,36 @@
+@darkblue : rgb(0, 3, 51);
+@blue : rgb(9, 0, 94);
+@white : rgb(216, 212, 255);
+
+html, body {
+    margin: 0;
+    background-color: @darkblue;
+    color: @white;
+    font-family: sans-serif;
+}
+
+div[class^='sr-'] {
+    margin: 300px auto;
+    height: 300px;
+    width: 300px;
+    border: 1px solid #000;
+    background-color: @blue;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#header {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+h2 {
+    margin: 0;
+    padding: 30px;
+    text-align: center;
+    background: linear-gradient(@darkblue, @blue, @darkblue);
+}

@@ -10,30 +10,34 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
 
     function toogleReveal(init=false) {
         function slide(out=false) {
-            let [obj, trig] = out ? [sr.out, triggerOut] : [sr, trigger];
+            let [obj, trig, trans] = out ? [sr.out, triggerOut, transformOut] : [sr, trigger, transform];
+            // trig = trigger && triggerOut;
             let slide = (obj.distance || slideDefault) * (out ? -1 : 1);
             let translateX = obj.slide.includes('left') ? slide : obj.slide.includes('right') ? -slide : 0;
             let translateY = obj.slide.includes('up') ? slide : obj.slide.includes('down') ? -slide : 0;
-            transform.push(trig ? 'translate(0)' : 'translate(' + translateX + 'px, ' + translateY + 'px)');
+            trans.push(trig ? 'translate(0)' : 'translate(' + translateX + 'px, ' + translateY + 'px)');
         }
 
         function zoom(out=false) {
-            let [obj, trig] = out ? [sr.out, triggerOut] : [sr, trigger];
+            let [obj, trig, trans] = out ? [sr.out, triggerOut, transformOut] : [sr, trigger, transform];
+            // trig = trigger && triggerOut;
             let ratio = 0.5 * (out ? 1 : -1);
-            transform.push(trig ? 'scale(1)' : 'scale(' + (1 + (obj.zoom.includes('in') ? ratio : obj.zoom.includes('out') ? -ratio : 0 )) + ')');
+            trans.push(trig ? 'scale(1)' : 'scale(' + (1 + (obj.zoom.includes('in') ? ratio : obj.zoom.includes('out') ? -ratio : 0 )) + ')');
         }
 
         function flip(out=false) {
-            let [obj, trig] = out ? [sr.out, triggerOut] : [sr, trigger];
+            let [obj, trig, trans] = out ? [sr.out, triggerOut, transformOut] : [sr, trigger, transform];
+            // trig = trigger && triggerOut;
             let angle = 90 * (out ? -1 : 1);
             let angleX = obj.flip.includes('down') ? angle : obj.flip.includes('up') ? -angle : 0;
             let angleY = obj.flip.includes('left') ? angle : obj.flip.includes('right') ? -angle : 0;
-            angleX && transform.push('perspective(1500px) ' + (trig ? 'rotateX(0)' : 'rotateX(' + angleX + 'deg)'));
-            angleY && transform.push('perspective(1500px) ' + (trig ? 'rotateY(0)' : 'rotateY(' + angleY + 'deg)'));
+            angleX && trans.push('perspective(1500px) ' + (trig ? 'rotateX(0)' : 'rotateX(' + angleX + 'deg)'));
+            angleY && trans.push('perspective(1500px) ' + (trig ? 'rotateY(0)' : 'rotateY(' + angleY + 'deg)'));
         }
 
         function applyChanges(out=false) {
-            element.style.transform = transform.join(' ') + ' ';
+            // if (!out) element.style.transform = '';
+            element.style.transform = (out ? transformOut : transform).join(' ') + ' ';
             element.style.opacity = triggerOut && trigger ? 1 : 0;
         }
 
@@ -44,6 +48,7 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
         if (trigger && sr.once) once = true;
 
         let transform = [];
+        let transformOut = [];
 
         sr.slide && slide();
         sr.out?.slide && slide(true);
@@ -53,10 +58,19 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
         sr.out?.flip && flip(true);
 
         if (init) {
-            return new Promise(resolve => resolve(applyChanges()));
+            applyChanges();
+            applyChanges(true);
+            return new Promise(resolve => resolve());
         } else {
-            setTimeout(applyChanges, sr.delay || 0);
+            setTimeout(() => applyChanges(true), sr.out?.delay || 0);
+            setTimeout(() => applyChanges(), sr.delay || 0);
         }
+        // if (init) {
+        //     return new Promise(resolve => resolve(applyChanges()));
+        // } else {
+        //     setTimeout(applyChanges, sr.delay || 0);
+        // }
+        // if (element.textContent.startsWith('sr-fade')) console.log('opacity(' + (trigger && triggerOut ? 1 : 0) + ') ' + element.style.transform);
     }
 
     toogleReveal(true).then(() => { // initialize style then add animation (for animation onload)
@@ -66,3 +80,6 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
         window.addEventListener('scroll', () => toogleReveal());
     })
 })
+
+// problèmes : avoir un sr.delay indépendant du sr.out.delay
+// déclenchement du sr.out au chargement de la page !!!
