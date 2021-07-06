@@ -63,6 +63,13 @@ You can use many animations together. For example :
 
 	<div class='sr-slide-left sr-zoom-in'></div>
 
+### Out animations
+
+When you scroll down and your element get out from the top of the viewport, you can add an animation (the same or a different as the reveal animation). You can use `sr-out`, then just add the name of the animation and the values, as seen above. For example :
+
+	<div class='sr-slide-left sr-out-fade'></div>
+
+
 ## Settings
 
 ### Duration of the animation
@@ -75,6 +82,10 @@ If the duration value is not a valid number, the duration will be the default va
 
 	let durationDefault = 700; // in ms
 
+**Note : the duration value works for both in and out animations. You can't have independant values.** It will be implemented in the next update. In the example below, the animation will last 2 secondes for both classes :
+
+	<div class='sr-slide-left sr-out-fade sr-duration-2000'></div>
+
 
 ### Delay before the animation
 
@@ -86,12 +97,20 @@ If you want to delay the display of your element, use the sr-delay class, follow
 
 If the delay value is not a valid number, the element will appear with no delay.
 
+**Note : the delay value works for both in and out animations. You can't have independant values.** It will be implemented in the next update. In the example below, the animation will start after 1 seconde for both classes :
+
+	<div class='sr-slide-left sr-out-fade sr-delay-1000'></div>
+
 ### Trigger of the animation
 
 When you scroll down, the animation will start when the element is half visible on the viewport. You can change it using sr-trigger. The value can be a number : it will **correspondre** to the distance between the top of the element and the bottom of the screen. If you want the element to be totally visible before launch the animation, use `sr-trigger-height`.
 
 	<div class='sr-slide-left sr-trigger-50'></div>
 	<div class='sr-slide-left sr-trigger-height'></div>
+
+The trigger value can be used independently for in and out animations. You have to use `sr-out-trigger`, it works just like `sr-trigger` :
+
+	<div class='sr-fade sr-trigger-100 sr-out-fade sr-out-trigger-height'></div>
 
 ### One shot animation
 
@@ -108,3 +127,7 @@ When you use `sr-slide`, the default distance of the slide is 200px. There are t
 Or you can change the distance of a specific element, using `sr-distance`, followed by your value (in px). For example : 
 
 	<div class='sr-slide-left sr-distance-500'></div>
+
+You can set up the distance independently for in and out animations. For example : 
+
+	<div class='sr-slide-up sr-distance-200 sr-out-slide-up sr-out-distance-400'></div>
