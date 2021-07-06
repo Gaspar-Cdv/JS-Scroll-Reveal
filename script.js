@@ -10,37 +10,7 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
     let lastTrig, lastTrigOut;
 
     function toogleReveal(init=false) {
-        // console.clear();
-        function slide(out=false) {
-            let [obj, trig, trans] = out ? [sr.out, triggerOut, transformOut] : [sr, trigger, transform];
-            let slide = (obj.distance || slideDefault) * (out ? -1 : 1);
-            let translateX = obj.slide.includes('left') ? slide : obj.slide.includes('right') ? -slide : 0;
-            let translateY = obj.slide.includes('up') ? slide : obj.slide.includes('down') ? -slide : 0;
-            trans.push(trig ? 'translate(0)' : 'translate(' + translateX + 'px, ' + translateY + 'px)');
-        }
-
-        function zoom(out=false) {
-            let [obj, trig, trans] = out ? [sr.out, triggerOut, transformOut] : [sr, trigger, transform];
-            let ratio = 0.5 * (out ? 1 : -1);
-            trans.push(trig ? 'scale(1)' : 'scale(' + (1 + (obj.zoom.includes('in') ? ratio : obj.zoom.includes('out') ? -ratio : 0 )) + ')');
-        }
-
-        function flip(out=false) {
-            let [obj, trig, trans] = out ? [sr.out, triggerOut, transformOut] : [sr, trigger, transform];
-            let angle = 90 * (out ? -1 : 1);
-            let angleX = obj.flip.includes('down') ? angle : obj.flip.includes('up') ? -angle : 0;
-            let angleY = obj.flip.includes('left') ? angle : obj.flip.includes('right') ? -angle : 0;
-            angleX && trans.push('perspective(1500px) ' + (trig ? 'rotateX(0)' : 'rotateX(' + angleX + 'deg)'));
-            angleY && trans.push('perspective(1500px) ' + (trig ? 'rotateY(0)' : 'rotateY(' + angleY + 'deg)'));
-        }
-
-        function applyChanges(out=false) {
-            element.style.transform = (out ? transformOut : transform).join(' ');
-            element.style.opacity = triggerOut && trigger ? 1 : 0;
-            if (element.textContent.startsWith('sr-fade')) console.log('init :', init, '/ out :', out, '/ opacity :', element.style.opacity, element);
-        }
-
-        let topFromBottom = window.innerHeight - (top - window.scrollY); // let bottomFromBottom = topFromBottom - height;
+        let topFromBottom = window.innerHeight - (top - window.scrollY);
         let bottomFromTop = top + height - window.scrollY;
         let invalidArgument = !sr.fade && !sr.slide && !sr.zoom && !sr.flip && !sr.out; // true if invalid sr-argument (=> no animation)
         let trigger = once || invalidArgument || !init && topFromBottom > (sr.trigger?.[0] == 'height' ? height : (sr.trigger?.[0] || height / 2)); // default value : half the height
@@ -52,12 +22,28 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
         let transform = [];
         let transformOut = [];
 
-        sr.slide && slide();
-        sr.out?.slide && slide(true);
-        sr.zoom && zoom();
-        sr.out?.zoom && zoom(true);
-        sr.flip && flip();
-        sr.out?.flip && flip(true);
+        function applyChanges(out=false) {
+            let [obj, trig, trans] = out ? [sr.out, triggerOut, transformOut] : [sr, trigger, transform];
+            if (obj.slide) {
+                let slide = (obj.distance || slideDefault) * (out ? -1 : 1);
+                let translateX = obj.slide.includes('left') ? slide : obj.slide.includes('right') ? -slide : 0;
+                let translateY = obj.slide.includes('up') ? slide : obj.slide.includes('down') ? -slide : 0;
+                trans.push(trig ? 'translate(0)' : 'translate(' + translateX + 'px, ' + translateY + 'px)');
+            }
+            if (obj.zoom) {
+                let ratio = 0.5 * (out ? 1 : -1);
+                trans.push(trig ? 'scale(1)' : 'scale(' + (1 + (obj.zoom.includes('in') ? ratio : obj.zoom.includes('out') ? -ratio : 0 )) + ')');
+            }
+            if (obj.flip) {
+                let angle = 90 * (out ? -1 : 1);
+                let angleX = obj.flip.includes('down') ? angle : obj.flip.includes('up') ? -angle : 0;
+                let angleY = obj.flip.includes('left') ? angle : obj.flip.includes('right') ? -angle : 0;
+                angleX && trans.push('perspective(1500px) ' + (trig ? 'rotateX(0)' : 'rotateX(' + angleX + 'deg)'));
+                angleY && trans.push('perspective(1500px) ' + (trig ? 'rotateY(0)' : 'rotateY(' + angleY + 'deg)'));
+            }
+            element.style.transform = trans.join(' ');
+            element.style.opacity = trig ? 1 : 0;
+        }
 
         if (init) {
             return new Promise(resolve => resolve(applyChanges()));
@@ -76,6 +62,3 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
         window.addEventListener('scroll', () => toogleReveal());
     })
 })
-
-// problèmes : avoir un sr.delay indépendant du sr.out.delay
-// déclenchement du sr.out au chargement de la page !!!
