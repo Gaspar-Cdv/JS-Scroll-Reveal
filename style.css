@@ -1,0 +1,30 @@
+html,
+body {
+  margin: 0;
+  background-color: #000333;
+  color: #d8d4ff;
+  font-family: sans-serif;
+}
+div[class^='sr-'] {
+  margin: 300px auto;
+  height: 300px;
+  width: 300px;
+  border: 1px solid #000;
+  background-color: #09005e;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+#header {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+h2 {
+  margin: 0;
+  padding: 30px;
+  text-align: center;
+  background: linear-gradient(#000333, #09005e, #000333);
+}

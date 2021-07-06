@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div id="header">
+        <h1 class="sr-slide-right sr-delay-200 sr-once">Scroll Reveal</h1>
+        <span class="sr-slide-left sr-delay-1000 sr-once">Scroll down</span>
+    </div>
+    <h2>Fade</h2>
+    <div class="sr-fade sr-out-flip-right sr-out-trigger-height sr-out-delay-500"></div>
+    <h2>Slides</h2>
+    <div class="sr-slide-right"></div>
+    <div class="sr-slide-left"></div>
+    <div class="sr-slide-down"></div>
+    <div class="sr-slide-up"></div>
+    <div class="sr-slide-up-right"></div>
+    <div class="sr-slide-up-left"></div>
+    <div class="sr-slide-down-right"></div>
+    <div class="sr-slide-down-left"></div>
+    <h2>Zooms</h2>
+    <div class="sr-zoom-in"></div>
+    <div class="sr-zoom-out"></div>
+    <h2>Flips</h2>
+    <div class="sr-flip-left"></div>
+    <div class="sr-flip-right"></div>
+    <div class="sr-flip-up"></div>
+    <div class="sr-flip-down"></div>
+    <div class="sr-flip-left-up"></div>
+    <div class="sr-flip-right-up"></div>
+    <div class="sr-flip-left-down"></div>
+    <div class="sr-flip-right-down"></div>
+    <h2>Customized</h2>
+    <div class="sr-slide-down-right sr-zoom-in"></div>
+    <div class="sr-slide-right sr-distance-500"></div>
+    <div class="sr-slide-left sr-duration-1500"></div>
+    <div class="sr-zoom-in sr-once"></div>
+    <div class="sr-zoom-out sr-delay-500"></div>
+    <div class="sr-flip-right sr-trigger-50"></div>
+    <div class="sr-flip-up sr-trigger-height"></div>
+    
+    <script src="script.js"></script>
+    <script>
+        document.querySelectorAll("div[class^='sr-']").forEach(element => {
+            element.innerHTML = element.classList.toString().replaceAll(' ', '<br>');
+        })
+    </script>
+</body>
+</html>
