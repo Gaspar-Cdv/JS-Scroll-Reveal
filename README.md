@@ -97,9 +97,9 @@ If you want to delay the display of your element, use the sr-delay class, follow
 
 If the delay value is not a valid number, the element will appear with no delay.
 
-**Note : the delay value works for both in and out animations. You can't have independant values.** It will be implemented in the next update. In the example below, the animation will start after 1 seconde for both classes :
+You can set up the delay independently for in and out animations. You have to use `sr-out-delay`, it works just like `sr-delay` :
 
-	<div class='sr-slide-left sr-out-fade sr-delay-1000'></div>
+	<div class='sr-fade sr-delay-200 sr-out-fade sr-out-delay-400'></div>
 
 ### Trigger of the animation
 
@@ -108,7 +108,7 @@ When you scroll down, the animation will start when the element is half visible 
 	<div class='sr-slide-left sr-trigger-50'></div>
 	<div class='sr-slide-left sr-trigger-height'></div>
 
-The trigger value can be used independently for in and out animations. You have to use `sr-out-trigger`, it works just like `sr-trigger` :
+You can set up the trigger independently for in and out animations. For example :
 
 	<div class='sr-fade sr-trigger-100 sr-out-fade sr-out-trigger-height'></div>
 
