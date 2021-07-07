@@ -1,6 +1,7 @@
 let durationDefault = 700; // in ms
 let slideDefault = 200; // in px
 let onceDefault = false; // if true, element doesn't disappear when displayed
+let easingDefault = 'cubic-bezier(0,.7,.68,1.17)';
 
 document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => {
     let sr = Object.fromEntries([...element.classList].filter(x => x.startsWith('sr-')).map(x => [(x = x.split('-'))[1], x.slice(2)]));
@@ -49,7 +50,7 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
             
             if (!init) {
                 let duration = !isNaN(sr_.duration?.[0]) ? sr_.duration[0] : durationDefault;
-                element.style.transition = 'opacity ' + duration + 'ms,  transform ' + duration + 'ms cubic-bezier(0,.7,.68,1.17)'; // or ease-in-out
+                element.style.transition = 'opacity ' + duration + 'ms,  transform ' + duration + 'ms ' + (sr_.easing || easingDefault); // or ease-in-out
             }
             
             element.style.transform = transform_.join(' ');
