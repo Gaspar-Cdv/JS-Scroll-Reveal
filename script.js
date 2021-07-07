@@ -1,58 +1,61 @@
 let durationDefault = 700; // in ms
-let slideDefault = 200; // in px 
+let slideDefault = 200; // in px
+let onceDefault = false; // if true, element doesn't disappear when displayed
 
 document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => {
     let sr = Object.fromEntries([...element.classList].filter(x => x.startsWith('sr-')).map(x => [(x = x.split('-'))[1], x.slice(2)]));
     if (sr.out) sr.out = Object.fromEntries([...element.classList].filter(x => x.startsWith('sr-out-')).map(x => [(x = x.split('-'))[2], x.slice(3)]));
     let top = element.getBoundingClientRect().top + window.scrollY;
     let height = element.getBoundingClientRect().height;
-    let once = false; // if true, element doesn't disappear when displayed (use sr-once)
-    let lastTrig, lastTrigOut;
+    let once = onceDefault; 
+    let lastVisible, lastVisibleOut;
 
     function toogleReveal(init=false) {
+        let transform = transformOut = [];
         let topFromBottom = window.innerHeight - (top - window.scrollY);
         let bottomFromTop = top + height - window.scrollY;
+        let trigger = sr.trigger?.[0] == 'height' ? height : (sr.trigger?.[0] || height / 2); // default value : half the height
+        let triggerOut = sr.out?.trigger?.[0] == 'height' ? height : (sr.out?.trigger?.[0] || height / 2); // default value : half the height
         let invalidArgument = !sr.fade && !sr.slide && !sr.zoom && !sr.flip && !sr.out; // true if invalid sr-argument (=> no animation)
-        let trigger = once || invalidArgument || !init && topFromBottom > (sr.trigger?.[0] == 'height' ? height : (sr.trigger?.[0] || height / 2)); // default value : half the height
-        let triggerOut = !sr.out || once || invalidArgument || !init && bottomFromTop > (sr.out.trigger?.[0] == 'height' ? height : (sr.out.trigger?.[0] || height / 2));
-        if (lastTrig == undefined && !init) lastTrig = !trigger;
-        if (lastTrigOut == undefined && !init) lastTrigOut = !triggerOut;
-        if (trigger && sr.once) once = true;
 
-        let transform = [];
-        let transformOut = [];
+        let visible = once || invalidArgument || topFromBottom > trigger; 
+        let visibleOut = !sr.out || once || invalidArgument || bottomFromTop > triggerOut;
+        if (lastVisible == undefined) lastVisible = !visible;
+        if (lastVisibleOut == undefined) lastVisibleOut = visibleOut;
+        if (visible && sr.once) once = true;
 
         function applyChanges(out=false) {
-            let [obj, trig, trans] = out ? [sr.out, triggerOut, transformOut] : [sr, trigger, transform];
-            if (obj.slide) {
-                let slide = (obj.distance || slideDefault) * (out ? -1 : 1);
-                let translateX = obj.slide.includes('left') ? slide : obj.slide.includes('right') ? -slide : 0;
-                let translateY = obj.slide.includes('up') ? slide : obj.slide.includes('down') ? -slide : 0;
-                trans.push(trig ? 'translate(0)' : 'translate(' + translateX + 'px, ' + translateY + 'px)');
+            let [sr_, visible_, transform_] = out ? [sr.out, visibleOut, transformOut] : [sr, visible, transform];
+            if (sr_.slide) {
+                let slide = (sr_.distance || slideDefault) * (out ? -1 : 1);
+                let translateX = sr_.slide.includes('left') ? slide : sr_.slide.includes('right') ? -slide : 0;
+                let translateY = sr_.slide.includes('up') ? slide : sr_.slide.includes('down') ? -slide : 0;
+                transform_.push(visible_ ? 'translate(0)' : 'translate(' + translateX + 'px, ' + translateY + 'px)');
             }
-            if (obj.zoom) {
+            if (sr_.zoom) {
                 let ratio = 0.5 * (out ? 1 : -1);
-                trans.push(trig ? 'scale(1)' : 'scale(' + (1 + (obj.zoom.includes('in') ? ratio : obj.zoom.includes('out') ? -ratio : 0 )) + ')');
+                transform_.push(visible_ ? 'scale(1)' : 'scale(' + (1 + (sr_.zoom.includes('in') ? ratio : sr_.zoom.includes('out') ? -ratio : 0 )) + ')');
             }
-            if (obj.flip) {
+            if (sr_.flip) {
                 let angle = 90 * (out ? -1 : 1);
-                let angleX = obj.flip.includes('down') ? angle : obj.flip.includes('up') ? -angle : 0;
-                let angleY = obj.flip.includes('left') ? angle : obj.flip.includes('right') ? -angle : 0;
-                angleX && trans.push('perspective(1500px) ' + (trig ? 'rotateX(0)' : 'rotateX(' + angleX + 'deg)'));
-                angleY && trans.push('perspective(1500px) ' + (trig ? 'rotateY(0)' : 'rotateY(' + angleY + 'deg)'));
+                let angleX = sr_.flip.includes('down') ? angle : sr_.flip.includes('up') ? -angle : 0;
+                let angleY = sr_.flip.includes('left') ? angle : sr_.flip.includes('right') ? -angle : 0;
+                angleX && transform_.push('perspective(1500px) ' + (visible_ ? 'rotateX(0)' : 'rotateX(' + angleX + 'deg)'));
+                angleY && transform_.push('perspective(1500px) ' + (visible_ ? 'rotateY(0)' : 'rotateY(' + angleY + 'deg)'));
             }
-            element.style.transform = trans.join(' ');
-            element.style.opacity = trig ? 1 : 0;
+            element.style.transform = transform_.join(' ');
+            element.style.opacity = +visible_;
         }
 
         if (init) {
+            visible = false;
             return new Promise(resolve => resolve(applyChanges()));
         } else {
-            lastTrig != trigger && setTimeout(() => applyChanges(), sr.delay || 0);
-            lastTrigOut != triggerOut && sr.out && setTimeout(() => applyChanges(true), sr.out.delay || 0);
+            lastVisible != visible && setTimeout(() => applyChanges(), sr.delay || 0);
+            lastVisibleOut != visibleOut && sr.out && setTimeout(() => applyChanges(true), sr.out.delay || 0);
         }
-        lastTrig = trigger;
-        lastTrigOut = triggerOut;
+        lastVisible = visible;
+        lastVisibleOut = visibleOut;
     }
 
     toogleReveal(true).then(() => { // initialize style then add animation (for animation onload)
