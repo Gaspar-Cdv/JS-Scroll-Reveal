@@ -118,6 +118,10 @@ By default, the element will appear and desappear each time you scroll up and do
 
 	<div class='sr-slide-left sr-once'></div>
 
+If you want all your elements to appear once, you can change the default value in the third line of the JS file :
+
+	let onceDefault = false; // if true, element doesn't disappear when displayed
+
 ### Distance of the animation (slide only)
 
 When you use `sr-slide`, the default distance of the slide is 200px. There are two ways to change it. You can change the distance of every slide effect by changing the second line of the JS file :
