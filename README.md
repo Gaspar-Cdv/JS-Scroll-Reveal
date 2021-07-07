@@ -97,26 +97,46 @@ If you want to delay the display of your element, use the sr-delay class, follow
 
 If the delay value is not a valid number, the element will appear with no delay.
 
-**Note : the delay value works for both in and out animations. You can't have independant values.** It will be implemented in the next update. In the example below, the animation will start after 1 seconde for both classes :
+You can set up the delay independently for in and out animations. You have to use `sr-out-delay`, it works just like `sr-delay` :
 
-	<div class='sr-slide-left sr-out-fade sr-delay-1000'></div>
+	<div class='sr-fade sr-delay-200 sr-out-fade sr-out-delay-400'></div>
 
 ### Trigger of the animation
 
-When you scroll down, the animation will start when the element is half visible on the viewport. You can change it using sr-trigger. The value can be a number : it will **correspondre** to the distance between the top of the element and the bottom of the screen. If you want the element to be totally visible before launch the animation, use `sr-trigger-height`.
+When you scroll down, the animation will start when the element is half visible on the viewport. You can change it using sr-trigger. The value can be a number : it will correspond to the distance between the top of the element and the bottom of the screen. If you want the element to be totally visible before launch the animation, use `sr-trigger-height`.
 
 	<div class='sr-slide-left sr-trigger-50'></div>
 	<div class='sr-slide-left sr-trigger-height'></div>
 
-The trigger value can be used independently for in and out animations. You have to use `sr-out-trigger`, it works just like `sr-trigger` :
+You can set up the trigger independently for in and out animations. For example :
 
 	<div class='sr-fade sr-trigger-100 sr-out-fade sr-out-trigger-height'></div>
+
+### Animation easing
+
+You can change the easing of the animation by using sr-easing :
+
+	<div class='sr-slide-left sr-easing-linear'></div>
+
+The default value is `cubic-bezier(0,.7,.68,1.17)`. You can change this value on the fourth line of the JS file :
+
+	let easingDefault = 'cubic-bezier(0,.7,.68,1.17)';
+
+
+You can set up the easing independently for in and out animations. For example :
+
+	<div class='sr-fade sr-easing-ease sr-out-fade sr-out-easing-linear'></div>
+
 
 ### One shot animation
 
 By default, the element will appear and desappear each time you scroll up and down. If you want your element to appear one time only, use `sr-once`. The element won't disappear any more.
 
 	<div class='sr-slide-left sr-once'></div>
+
+If you want all your elements to appear once, you can change the default value in the third line of the JS file :
+
+	let onceDefault = false; // if true, element doesn't disappear when displayed
 
 ### Distance of the animation (slide only)
 

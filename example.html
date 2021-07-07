@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <title></title>
+    <link rel="shortcut icon" href="#"> <!-- pour supprimer l'erreur de favicon sur Live Server -->
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -13,7 +14,7 @@
         <span class="sr-slide-left sr-delay-1000 sr-once">Scroll down</span>
     </div>
     <h2>Fade</h2>
-    <div class="sr-fade sr-out-flip-right sr-out-trigger-height sr-out-delay-500"></div>
+    <div class="sr-fade"></div>
     <h2>Slides</h2>
     <div class="sr-slide-right"></div>
     <div class="sr-slide-left"></div>
@@ -37,12 +38,19 @@
     <div class="sr-flip-right-down"></div>
     <h2>Customized</h2>
     <div class="sr-slide-down-right sr-zoom-in"></div>
+    <div class="sr-fade sr-out-slide-right"></div>
     <div class="sr-slide-right sr-distance-500"></div>
+    <div class="sr-slide-right sr-distance-50 sr-out-slide-right sr-out-distance-400"></div>
     <div class="sr-slide-left sr-duration-1500"></div>
-    <div class="sr-zoom-in sr-once"></div>
+    <div class="sr-fade sr-duration-300 sr-out-slide-right sr-out-duration-2000"></div>
     <div class="sr-zoom-out sr-delay-500"></div>
+    <div class="sr-zoom-in sr-delay-200 sr-out-zoom-in sr-out-delay-600"></div>
     <div class="sr-flip-right sr-trigger-50"></div>
     <div class="sr-flip-up sr-trigger-height"></div>
+    <div class="sr-fade sr-trigger-400 sr-out-fade sr-out-trigger-height"></div>
+    <div class='sr-slide-left sr-easing-ease-in'></div>
+    <div class='sr-fade sr-easing-linear sr-out-slide-right sr-out-easing-ease-out'></div>
+    <div class="sr-zoom-in sr-once"></div>
     
     <script src="script.js"></script>
     <script>
