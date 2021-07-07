@@ -74,7 +74,7 @@ When you scroll down and your element get out from the top of the viewport, you 
 
 ### Duration of the animation
 
-It is possible to customize the duration of your animation. Just add a sr-duration class followed by your value in ms. In the example below, the animation will last one second (1000ms) :
+It is possible to customize the duration of your animation. Just add a `sr-duration` class followed by your value in ms. In the example below, the animation will last one second (1000ms) :
 
 	<div class='sr-slide-left sr-duration-1000'></div>
 
@@ -82,14 +82,14 @@ If the duration value is not a valid number, the duration will be the default va
 
 	let durationDefault = 700; // in ms
 
-**Note : the duration value works for both in and out animations. You can't have independant values.** It will be implemented in the next update. In the example below, the animation will last 2 secondes for both classes :
+You can set up the duration independently for in and out animations. You have to use `sr-out-duration`, it works just like `sr-duration` :
 
-	<div class='sr-slide-left sr-out-fade sr-duration-2000'></div>
+	<div class='sr-slide-left sr-duration-2000 sr-out-fade sr-out-duration-400'></div>
 
 
 ### Delay before the animation
 
-If you want to delay the display of your element, use the sr-delay class, followed by your value in ms. It can be useful on the head of your website, when the page is just loaded.
+If you want to delay the display of your element, use the `sr-delay` class, followed by your value in ms. It can be useful on the head of your website, when the page is just loaded.
 
 
 	<div class='sr-slide-left sr-delay-200'></div>
@@ -97,13 +97,13 @@ If you want to delay the display of your element, use the sr-delay class, follow
 
 If the delay value is not a valid number, the element will appear with no delay.
 
-You can set up the delay independently for in and out animations. You have to use `sr-out-delay`, it works just like `sr-delay` :
+You can set up the delay independently for in and out animations. For example :
 
 	<div class='sr-fade sr-delay-200 sr-out-fade sr-out-delay-400'></div>
 
 ### Trigger of the animation
 
-When you scroll down, the animation will start when the element is half visible on the viewport. You can change it using sr-trigger. The value can be a number : it will correspond to the distance between the top of the element and the bottom of the screen. If you want the element to be totally visible before launch the animation, use `sr-trigger-height`.
+When you scroll down, the animation will start when the element is half visible on the viewport. You can change it using `sr-trigger`. The value can be a number : it will correspond to the distance between the top of the element and the bottom of the screen. If you want the element to be totally visible before launch the animation, use `sr-trigger-height`.
 
 	<div class='sr-slide-left sr-trigger-50'></div>
 	<div class='sr-slide-left sr-trigger-height'></div>
@@ -114,7 +114,7 @@ You can set up the trigger independently for in and out animations. For example 
 
 ### Animation easing
 
-You can change the easing of the animation by using sr-easing :
+You can change the easing of the animation by using `sr-easing` :
 
 	<div class='sr-slide-left sr-easing-linear'></div>
 
@@ -125,7 +125,7 @@ The default value is `cubic-bezier(0,.7,.68,1.17)`. You can change this value on
 
 You can set up the easing independently for in and out animations. For example :
 
-	<div class='sr-fade sr-easing-ease sr-out-fade sr-out-easing-linear'></div>
+	<div class='sr-fade sr-easing-ease-out sr-out-fade sr-out-easing-linear'></div>
 
 
 ### One shot animation
@@ -151,3 +151,7 @@ Or you can change the distance of a specific element, using `sr-distance`, follo
 You can set up the distance independently for in and out animations. For example : 
 
 	<div class='sr-slide-up sr-distance-200 sr-out-slide-up sr-out-distance-400'></div>
+	
+## Try it yourself !
+
+Only the file `sr.js` is needed to use this library, but you can watch examples of every possibilities in `example.html` (in addition to `style.css`). Have fun !
