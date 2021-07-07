@@ -3,6 +3,24 @@ let slideDefault = 200; // in px
 let onceDefault = false; // if true, element doesn't disappear when displayed
 let easingDefault = 'cubic-bezier(0,.7,.68,1.17)';
 
+function throttle(callback, delay) {
+    var last = 0;
+    return function (...args) {
+        var now = new Date();
+        if (now - last >= delay) {
+            callback(...args);
+            last = now;
+        }
+    };
+}
+
+let test = document.createElement('div');
+document.querySelector('body').appendChild(test);
+test.style.position = 'fixed';
+test.style.top = '10px';
+test.style.left = '10px';
+test.textContent = '0';
+
 document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => {
     let sr = Object.fromEntries([...element.classList].filter(x => x.startsWith('sr-')).map(x => [(x = x.split('-'))[1], x.slice(2)]));
     if (sr.out) sr.out = Object.fromEntries([...element.classList].filter(x => x.startsWith('sr-out-')).map(x => [(x = x.split('-'))[2], x.slice(3)]));
@@ -12,6 +30,7 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
     let lastVisible, lastVisibleOut;
 
     function toogleReveal(init=false) {
+        test.textContent++;
         let transform = transformOut = [];
         let topFromBottom = window.innerHeight - (top - window.scrollY);
         let bottomFromTop = top + height - window.scrollY;
@@ -70,6 +89,6 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
 
     toogleReveal(true).then(() => { // initialize style then add animation (for animation onload)
         toogleReveal();
-        window.addEventListener('scroll', () => toogleReveal());
+        window.addEventListener('scroll', throttle(() => toogleReveal(), 40));
     })
 })
