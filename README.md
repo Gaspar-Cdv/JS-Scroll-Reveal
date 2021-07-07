@@ -103,7 +103,7 @@ You can set up the delay independently for in and out animations. You have to us
 
 ### Trigger of the animation
 
-When you scroll down, the animation will start when the element is half visible on the viewport. You can change it using sr-trigger. The value can be a number : it will **correspondre** to the distance between the top of the element and the bottom of the screen. If you want the element to be totally visible before launch the animation, use `sr-trigger-height`.
+When you scroll down, the animation will start when the element is half visible on the viewport. You can change it using sr-trigger. The value can be a number : it will correspond to the distance between the top of the element and the bottom of the screen. If you want the element to be totally visible before launch the animation, use `sr-trigger-height`.
 
 	<div class='sr-slide-left sr-trigger-50'></div>
 	<div class='sr-slide-left sr-trigger-height'></div>
@@ -111,6 +111,22 @@ When you scroll down, the animation will start when the element is half visible 
 You can set up the trigger independently for in and out animations. For example :
 
 	<div class='sr-fade sr-trigger-100 sr-out-fade sr-out-trigger-height'></div>
+
+### Animation easing
+
+You can change the easing of the animation by using sr-easing :
+
+	<div class='sr-slide-left sr-easing-linear'></div>
+
+The default value is `cubic-bezier(0,.7,.68,1.17)`. You can change this value on the fourth line of the JS file :
+
+	let easingDefault = 'cubic-bezier(0,.7,.68,1.17)';
+
+
+You can set up the easing independently for in and out animations. For example :
+
+	<div class='sr-fade sr-easing-ease sr-out-fade sr-out-easing-linear'></div>
+
 
 ### One shot animation
 
