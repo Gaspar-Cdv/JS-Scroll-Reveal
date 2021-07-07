@@ -14,13 +14,6 @@ function throttle(callback, delay) {
     };
 }
 
-let test = document.createElement('div');
-document.querySelector('body').appendChild(test);
-test.style.position = 'fixed';
-test.style.top = '10px';
-test.style.left = '10px';
-test.textContent = '0';
-
 document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => {
     let sr = Object.fromEntries([...element.classList].filter(x => x.startsWith('sr-')).map(x => [(x = x.split('-'))[1], x.slice(2)]));
     if (sr.out) sr.out = Object.fromEntries([...element.classList].filter(x => x.startsWith('sr-out-')).map(x => [(x = x.split('-'))[2], x.slice(3)]));
@@ -30,7 +23,6 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
     let lastVisible, lastVisibleOut;
 
     function toogleReveal(init=false) {
-        test.textContent++;
         let transform = transformOut = [];
         let topFromBottom = window.innerHeight - (top - window.scrollY);
         let bottomFromTop = top + height - window.scrollY;
@@ -69,7 +61,7 @@ document.querySelectorAll("[class^='sr-'], [class*=' sr-']").forEach(element => 
             
             if (!init) {
                 let duration = !isNaN(sr_.duration?.[0]) ? sr_.duration[0] : durationDefault;
-                element.style.transition = 'opacity ' + duration + 'ms,  transform ' + duration + 'ms ' + (sr_.easing || easingDefault); // or ease-in-out
+                element.style.transition = 'opacity ' + duration + 'ms,  transform ' + duration + 'ms ' + (sr_.easing?.join('-') || easingDefault); // or ease-in-out
             }
             
             element.style.transform = transform_.join(' ');
